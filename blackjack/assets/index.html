@@ -1,16 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BlackJack</title>
 
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
     <link rel="stylesheet" href="./css/styles.css">
 
 </head>
+
 <body>
-    
+
+    <header class="titulo">
+        Blackjack
+    </header>
+
+    <div class="row mt-2">
+        <div id="divBotones" class="col text-center">
+            <button id="btnNuevo" class="btn btn-info">
+                Nuevo Juego
+            </button>
+            <button id="btnPedir" class="btn btn-primary">
+                Pedir Carta
+            </button>
+            <button id="btnDetener" class="btn btn-danger">
+                Detener
+            </button>
+        </div>
+    </div>
+
+    <div class="row container">
+        <div class="col">
+
+            <h1>Jugador 1 - <small>0</small></h1>
+            <div id="jugador-cartas">
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="row container mt-2">
+        <div class="col">
+
+            <h1>Computadora - <small>0</small></h1>
+            <div id="computadora-cartas">
+            </div>
+
+        </div>
+    </div>
+
+
+    <script src="./js/underscore.js"></script>
     <script src="./js/juego.js"></script>
 </body>
+
 </html>
