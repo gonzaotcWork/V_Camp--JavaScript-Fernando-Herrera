@@ -1,42 +1,104 @@
 const miModulo = (() => {
     "use strict";
 
-    let deck = [];
     const tipos = ["C", "D", "H", "S"],
         letras = ["J", "Q", "K", "A"];
 
-    let puntosJugadores = [];
+    let numJugadores = 2,
+        puntosJugadores = [],
+        deck = [],
+        fichasJugador = 100,
+        fichasApuesta;
 
     // REFERENCIAS AL DOM
     const btnPedir = document.querySelector("#btnPedir"),
         btnDetener = document.querySelector("#btnDetener"),
-        btnNuevo = document.querySelector("#btnNuevo");
+        btnNuevo = document.querySelector("#btnNuevo"),
+        btnReiniciar = document.querySelector("#btnReiniciar");
 
-    const divCartasJugadores = document.querySelectorAll(".player__divCartas"),
-        puntosHTML = document.querySelectorAll("small");
-    
-    //REFERENCIAS NUEVAS
-    const fichas = document.querySelector('#fichas');
-    const mensaje = document.querySelector('.message');
+    const divCartasJugadores = document.querySelectorAll(".player__divCartas");
+    const puntosHTML = document.querySelectorAll("small");
+
+    //REFERENCIAS MIAS
+    const fichasOutput = document.querySelector("#fichas");
+    const mensajeOutput = document.querySelector(".message");
+    const fichasInput = document.querySelector("#fichas__input");
+    const fichasApostadasDOM = document.querySelector("#player__apostado__fichas");
+
+    const errorOutput = document.querySelector("#errorOutput");
 
     // FUNCIONES
-    const inicializarJuego = (numJugadores = 2) => {
+    const inicializarJuego = () => {
+        fichasApuesta = fichasInput.value;
+
+        // Validaciones
+        if (fichasApuesta <= 0) {
+            return printError("Las fichas a jugar deben ser un número positivo.");
+        }
+        if (fichasApuesta > 0 && fichasApuesta > fichasJugador) {
+            return printError("No podés jugar más fichas de las que tenés, timbero.");
+        }
+
+        btnNuevo.disabled = true;
+        btnReiniciar.disabled = true;
+        fichasInput.value = null;
+        setFichas(fichasJugador - fichasApuesta);
+        mostrarApuesta(fichasApuesta);
+
         deck = crearDeck();
+        limpiarJuego();
+
+        btnPedir.disabled = false;
+        btnDetener.disabled = false;
+    };
+
+    const reiniciarJuego = () => {
+        setFichas(100);
+        limpiarJuego();
+        crearCarta('grey_back', 0);
+        crearCarta('grey_back', 0);
+        crearCarta('red_back', puntosJugadores.length - 1);
+        crearCarta('red_back', puntosJugadores.length - 1);
+    };
+
+    const limpiarJuego = () => {
         puntosJugadores = [];
         for (let i = 0; i < numJugadores; i++) {
             puntosJugadores.push(0); // re-creo el arreglo de puntaje.
             puntosHTML[i].innerText = 0; // reinicio los puntajes en pantalla.
-            removeAllChildNodes(divCartasJugadores[i]); // elimino las cartas. 
+            removeAllChildNodes(divCartasJugadores[i]); // elimino las cartas.
         }
-
-        btnPedir.disabled = false;
-        btnDetener.disabled = false;
+        printMensaje("");
     };
 
     const removeAllChildNodes = parent => {
         while (parent.children.length > 0) {
             parent.removeChild(parent.firstChild);
         }
+    };
+
+    const printError = error => {
+        errorOutput.innerText = error;
+        setTimeout(() => {
+            errorOutput.innerText = "";
+        }, 1500);
+    };
+
+    const printMensaje = mensaje => {
+        mensajeOutput.innerHTML = mensaje;
+    };
+
+    const setFichas = cantidad => {
+        fichasJugador = cantidad;
+        fichasOutput.innerText = cantidad;
+    };
+
+    const mostrarApuesta = apuesta => {
+        fichasApostadasDOM.innerText = apuesta;
+        fichasApostadasDOM.parentElement.classList.remove("hide");
+    };
+    const esconderApuesta = () => {
+        fichasApostadasDOM.parentElement.classList.add("hide");
     };
 
     const crearDeck = () => {
@@ -85,15 +147,32 @@ const miModulo = (() => {
         const [puntosMinimos, puntosComputadora] = puntosJugadores;
         setTimeout(() => {
             if (puntosMinimos > 21) {
-                alert(`Te pasaste, gana la computadora con ${puntosComputadora}`);
+                printMensaje("Perdiste, te pasaste.");
+                // No recupera nada.
             } else if (puntosComputadora > 21) {
-                alert(`GANASTE! con ${puntosMinimos}. La computadora se pasó. `);
+                if (puntosMinimos === 21) {
+                    // Gana x5;
+                    setFichas(fichasJugador + fichasApuesta * 5);
+                    printMensaje(
+                        `<span class="black">¡</span><span class="yellow">Black Jack ${puntosMinimos}</span><span class="black">!</span>, ganaste x5 `
+                    );
+                } else {
+                    //Gana x2
+                    setFichas(fichasJugador + fichasApuesta * 2);
+                    printMensaje(`Ganaste!, el casino se pasó.`);
+                }
             } else if (puntosComputadora === puntosMinimos) {
-                alert("Nadie gana");
+                // Recupera lo apostado.
+                setFichas(fichasJugador + fichasApuesta * 1);
+                printMensaje("Empate, recuperas la apuesta.");
             } else {
                 // La única posibilidad restante es que puntosComputadora > puntosJugador
-                alert(`Gana la computadora con ${puntosComputadora}`);
+                // No recupera nada.
+                printMensaje(`Gano el casino.`);
             }
+            esconderApuesta();
+            btnNuevo.disabled = false;
+            btnReiniciar.disabled = false;
         }, 1000);
     };
 
@@ -116,12 +195,12 @@ const miModulo = (() => {
         crearCarta(carta, 0);
 
         if (puntosJugador > 21) {
-            console.warn("Lo siento mucho, perdiste");
             btnPedir.disabled = true;
             btnDetener.disabled = true;
+            // Desactivo los botones si pierde,
             turnoComputadora(puntosJugador);
         } else if (puntosJugador === 21) {
-            console.warn("21, genial!");
+            // Desactivo los botones si saca 21.
             btnPedir.disabled = true;
             btnDetener.disabled = true;
             turnoComputadora(puntosJugador);
@@ -131,6 +210,7 @@ const miModulo = (() => {
     btnDetener.addEventListener("click", () => {
         btnPedir.disabled = true;
         btnDetener.disabled = true;
+        // Desactivo los botones si detiene.
         turnoComputadora(puntosJugadores[0]);
     });
 
@@ -138,8 +218,11 @@ const miModulo = (() => {
         inicializarJuego();
     });
 
-    return {
-        nuevoJuego: inicializarJuego // Hago pública la función.
-    };
+    btnReiniciar.addEventListener("click", () => {
+        reiniciarJuego();
+    });
 
+    return {
+        nuevoJuego: inicializarJuego, // Hago pública la función.
+    };
 })();

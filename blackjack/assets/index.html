@@ -28,16 +28,18 @@
 
     <div class="wrapper">
 
-        <div class="navbar mt-2">
+        <div class="navbar">
             <div class="navbar__fichas">
 
                 <span id="fichas">100</span>
-                <img src="../images/fichas.png.png" alt="">
+                <img src="../images/fichas.png" alt="">
 
             </div>
             <div class="navbar__buttons">
-                <button id="btnNuevo" class="btn mr-5 btn-info">Nuevo Juego</button>
-                <button id="btnPedir" class="btn btn-primary" disabled="disabled">Pedir Carta</button>
+                <span id="errorOutput"></span>
+                <input id="fichas__input" class="btn" type="number" min="0" value="0">
+                <button id="btnNuevo" class="btn mr-5 btn-primary">Jugar</button>
+                <button id="btnPedir" class="btn btn-info" disabled="disabled">Pedir Carta</button>
                 <button id="btnDetener" class="btn btn-warning" disabled="disabled">Detener</button>
                 <button id="btnReiniciar" class="btn ml-5 btn-danger" disabled="disabled">Reiniciar</button>
             </div>
@@ -47,29 +49,31 @@
             <div class="player">
                 <h1 class="player__name">Jugador - <small>0</small></h1>
                 <div id="jugador-cartas" class="player__divCartas">
+                    <img class="carta" src="../images/cartas/grey_back.png" alt="">
+                    <img class="carta" src="../images/cartas/grey_back.png" alt="">
+                </div>
+                <div class="player__apostado hide">
+                    <span id="player__apostado__fichas">100</span>
+                    <img src="../images/fichas2.png" alt="">
                 </div>
             </div>
             <div class="player">
                 <h1 class="player__name">Casino - <small>0</small></h1>
                 <div id="computadora-cartas" class="player__divCartas">
+                    <img class="carta" src="../images/cartas/red_back.png" alt="">
+                    <img class="carta" src="../images/cartas/red_back.png" alt="">
                 </div>
             </div>
         </div>
 
         <div class="messages">
             <span class="message">
-                Mensaje
             </span>
         </div>
     </div>
 
-
     <script src="./js/underscore.js"></script>
     <script src="./js/juego-min.js"></script>
-
-    <script>
-        miModulo.nuevoJuego(); // Inicio el juego.
-    </script>
 </body>
 
 </html>
