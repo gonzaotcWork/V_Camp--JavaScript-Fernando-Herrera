@@ -5,59 +5,71 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BlackJack</title>
+    <title>V_Camp ~ BlackJack</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="./css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Racing+Sans+One&family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="./sass/styles.min.css">
 
 </head>
 
 <body>
 
     <header class="titulo">
-        Blackjack
+        V_Camp ~ Blackjack
     </header>
 
-    <div class="row mt-2">
-        <div id="divBotones" class="col text-center">
-            <button id="btnNuevo" class="btn btn-info">
-                Nuevo Juego
-            </button>
-            <button id="btnPedir" class="btn btn-primary">
-                Pedir Carta
-            </button>
-            <button id="btnDetener" class="btn btn-danger">
-                Detener
-            </button>
-        </div>
-    </div>
+    <div class="wrapper">
 
-    <div class="row container">
-        <div class="col">
+        <div class="navbar mt-2">
+            <div class="navbar__fichas">
 
-            <h1>Jugador 1 - <small>0</small></h1>
-            <div id="jugador-cartas">
+                <span id="fichas">100</span>
+                <img src="../images/fichas.png.png" alt="">
+
             </div>
-
-        </div>
-    </div>
-
-
-    <div class="row container mt-2">
-        <div class="col">
-
-            <h1>Computadora - <small>0</small></h1>
-            <div id="computadora-cartas">
+            <div class="navbar__buttons">
+                <button id="btnNuevo" class="btn mr-5 btn-info">Nuevo Juego</button>
+                <button id="btnPedir" class="btn btn-primary" disabled="disabled">Pedir Carta</button>
+                <button id="btnDetener" class="btn btn-warning" disabled="disabled">Detener</button>
+                <button id="btnReiniciar" class="btn ml-5 btn-danger" disabled="disabled">Reiniciar</button>
             </div>
+        </div>
 
+        <div class="players">
+            <div class="player">
+                <h1 class="player__name">Jugador - <small>0</small></h1>
+                <div id="jugador-cartas" class="player__divCartas">
+                </div>
+            </div>
+            <div class="player">
+                <h1 class="player__name">Casino - <small>0</small></h1>
+                <div id="computadora-cartas" class="player__divCartas">
+                </div>
+            </div>
+        </div>
+
+        <div class="messages">
+            <span class="message">
+                Mensaje
+            </span>
         </div>
     </div>
 
 
     <script src="./js/underscore.js"></script>
-    <script src="./js/juego.js"></script>
+    <script src="./js/juego-min.js"></script>
+
+    <script>
+        miModulo.nuevoJuego(); // Inicio el juego.
+    </script>
 </body>
 
 </html>
